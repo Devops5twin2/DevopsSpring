@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/KaddemProject-1.0.jar app.jar
 
 # Expose the port that the application will run on
-EXPOSE 8080
+EXPOSE 8086
 
 # Define the command to run the application when the container starts
 CMD ["java", "-jar", "app.jar"]
