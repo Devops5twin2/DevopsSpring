@@ -29,7 +29,7 @@ public class PerformanceAspect {
 
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-//	    List<Object> obj = new ArrayList<Object>(); // si le type de retour est une listeeeeeeeee
+//	    List<Object> obj = new ArrayList<Object>(); // si le type de retour est une listeeeeeeeeee
 //		obj = (List<Object>) pjp.proceed();:
 		Object obj = pjp.proceed();
 
