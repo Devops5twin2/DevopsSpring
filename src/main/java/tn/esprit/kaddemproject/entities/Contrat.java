@@ -16,7 +16,7 @@ public class Contrat implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE) // we use this annotation to suppress the setter for idContrat fields
+    @Setter(AccessLevel.NONE) // we use this annotation to suppress the setter for idContrat field
     private Integer idContrat;
     /*
     when dealing with LocalDate, @Temporal annotation is not needed.
