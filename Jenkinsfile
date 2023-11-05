@@ -10,7 +10,7 @@ pipeline {
             steps {
                 git branch: 'mouhib', credentialsId: 'github-access-token', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
                 sh 'chmod +x mvnw'
-                // Check if the Docker image already exists
+                // Check if the Docker image already existts
                 script {
                     def imageExists = sh(script: 'docker images -q my-spring-app', returnStdout: true).trim()
                         sh 'docker rmi my-spring-app'
