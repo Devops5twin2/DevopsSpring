@@ -28,7 +28,6 @@ public class Contrat implements Serializable{
 
     private LocalDate dateDebutContrat;
     private LocalDate dateFinContrat;
-    private LocalDate dateDesbutContrat;
     @Enumerated(EnumType.STRING)
     private Specialite specialite;
     private Boolean archive;
