@@ -13,7 +13,7 @@ pipeline {
                 // Check if the Docker image already existts
                 script {
                     def imageExists = sh(script: 'docker images -q my-spring-app', returnStdout: true).trim()
-                        sh 'docker rmi my-spring-app'
+                       
                     if (imageExists) {
                         echo ' Docker image already exists. Removing the existing image...'
                         sh 'sudo docker stop springboot-mysql-container'
