@@ -11,7 +11,7 @@ pipeline {
                 sh 'chmod +x mvnw'
                 // Check if the Docker image already exists
                 script {
-                      sh 'sudo docker rmi my-spring-app'
+                     
                     def imageExists = sh(script: 'docker images -q my-spring-app', returnStdout: true).trim()
                     if (imageExists) {
                         echo ' Docker image already exists. Removing the existing image...'
