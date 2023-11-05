@@ -4,8 +4,8 @@ FROM openjdk:11-jre-slim
 # Set the working directory
 WORKDIR /app
 
-# Copy the Spring Boot application JAR file into the container
-COPY target/KaddemProject-1.0.jar app.jar
+# Download the JAR file from Nexus and copy it into the container
+RUN wget -O app.jar http://192.168.33.120:8081/repository/maven-releases/tn/esprit/KaddemProject/1.0/KaddemProject-1.0.jar
 
 # Expose the port that the application will run on
 EXPOSE 8080
