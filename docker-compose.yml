@@ -1,0 +1,34 @@
+version: "3.8"
+
+networks:
+  springboot-mysql-net:
+
+services:
+
+  mysqldb:
+    container_name: mysqldb
+    image: "mysqldb:latest"
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=kaddem
+    networks:
+      - springboot-mysql-net
+
+  kaddem:
+    container_name: kadem_container
+    build: ./
+    image: kaddem
+    restart: unless-stopped
+    environment:
+      - spring.datasource.url=jdbc:mysql://localhost:3306/kaddemProject?createDatabaseIfNotExist=true
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysqldb
+    networks:
+      - springboot-mysql-net
