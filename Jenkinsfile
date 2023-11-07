@@ -20,14 +20,6 @@ pipeline {
             }
         }
         
-        stage('Wait for Nexus to be ready') {
-            steps {
-                script {
-                    // Implement a wait-for-it script or similar logic to wait for Nexus to be ready
-                    sh 'wait-for-it.sh 192.187.47.10:8081 --timeout=300'
-                }
-            }
-        }
 
         stage('Maven Build and Deploy to Nexus') {
             steps {
