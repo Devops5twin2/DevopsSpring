@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Start only the Nexus and SQL services
-                    sh 'sudo docker-compose -f docker-compose.yml up -d nexus mysqldb'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
                 }
             }
         }
@@ -45,6 +45,9 @@ pipeline {
         failure {
             echo 'Pipeline failed.'
         }
-      
+        always {
+            // Clean up
+            sh 'sudo docker-compose -f docker-compose.yml down'
+        }
     }
 }
