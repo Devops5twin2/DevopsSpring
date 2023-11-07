@@ -9,8 +9,8 @@ services:
       MYSQL_DATABASE: spring
     ports:
       - 3306:3306
-    # networks:
-    #   springboot-mysql:
+    networks:
+      springboot-mysql:
 
   my-spring-app:
     container_name: my-spring-app
@@ -25,5 +25,5 @@ services:
     #   springboot-mysql:
     restart: always
 
-# networks:
-#   springboot-mysql:
+networks:
+  springboot-mysql:
