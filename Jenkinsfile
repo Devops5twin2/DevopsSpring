@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'chehine', credentialsId: 'github_chehine', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
+                git branch:'chehine', credentialsId: 'github_chehine', url: 'https://github.com/Devops5twin2/DevopsSpring'
             }
         }
         
