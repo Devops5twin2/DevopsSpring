@@ -13,6 +13,7 @@ pipeline {
          stage('testing') {
                     steps {
                          sh 'chmod +x mvnw'
+                         sh 'chmod +x mvnw.cmd'
                         sh './mvnw  test -Ptest'
                     }
                 }
@@ -30,6 +31,7 @@ pipeline {
         stage('Maven Build and Deploy to Nexus') {
             steps {
                 sh 'chmod +x mvnw'
+                 sh 'chmod +x mvnw.cmd'
                 sh './mvnw clean deploy -Pprod'
             }
         }
