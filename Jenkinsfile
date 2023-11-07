@@ -10,6 +10,11 @@ pipeline {
                   git branch: 'houssem', credentialsId: 'Github_Credentials', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
             }
         }
+         stage('testing') {
+                    steps {
+                        sh './mvnw  test -Ptest '
+                    }
+                }
 
         stage('Start Nexus and SQL') {
             steps {
@@ -24,7 +29,8 @@ pipeline {
         stage('Maven Build and Deploy to Nexus') {
             steps {
                 sh 'chmod +x mvnw'
-                sh './mvnw clean deploy -DskipTests'
+                sh './mvnw clean deploy -Pprod'
+'
             }
         }
         
