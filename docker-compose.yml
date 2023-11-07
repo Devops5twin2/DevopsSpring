@@ -21,7 +21,7 @@ services:
     depends_on:
       - mysqldb
     networks:
-      - springboot-mysql-
+      - springboot-mysql
     restart: always
 
 networks:
