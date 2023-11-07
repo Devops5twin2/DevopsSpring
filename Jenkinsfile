@@ -24,13 +24,13 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'chmod +x mvnw'
-                sh './mvnw test -Ptest '
+                sh './mvnw test -Dspring.profiles.active=test  '
             }
         }
 
         stage('Maven Build and Deploy to Nexus') {
             steps {
-                sh './mvnw clean deploy -Pbuild ' // skipTests because we already run them
+                sh './mvnw clean deploy -Dspring.profiles.active=build ' // sskipTests because we already run them
             }
         }
 
