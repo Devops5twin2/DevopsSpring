@@ -20,14 +20,20 @@ pipeline {
             }
         }
         
+        // New stage for running tests
+        stage('Run Tests') {
+            steps {
+                sh 'chmod +x mvnw'
+                sh './mvnw test'
+            }
+        }
 
         stage('Maven Build and Deploy to Nexus') {
             steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw clean deploy -DskipTests'
+                sh './mvnw clean deploy ' // skipTests because we already run them
             }
         }
-        
+
         stage('Build and Start Spring Application') {
             steps {
                 script {
@@ -44,7 +50,7 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed.'
-             sh 'sudo docker-compose -f docker-compose.yml down'
+            sh 'sudo docker-compose -f docker-compose.yml down'
         }
      
     }

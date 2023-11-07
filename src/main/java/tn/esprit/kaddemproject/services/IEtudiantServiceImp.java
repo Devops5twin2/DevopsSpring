@@ -12,6 +12,7 @@ import tn.esprit.kaddemproject.entities.Equipe;
 import tn.esprit.kaddemproject.entities.Etudiant;
 import tn.esprit.kaddemproject.generic.IGenericServiceImp;
 import tn.esprit.kaddemproject.repositories.ContratRepository;
+import tn.esprit.kaddemproject.repositories.DepartementRepository;
 import tn.esprit.kaddemproject.repositories.EquipeRepository;
 import tn.esprit.kaddemproject.repositories.EtudiantRepository;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public class IEtudiantServiceImp extends IGenericServiceImp<Etudiant,Integer> implements IEtudiantService {
 
     private final EtudiantRepository etudiantRepository;
+    private final DepartementRepository departementRepository;
     @Lazy
     private final IContratService iContratService;
     @Lazy
@@ -34,8 +36,8 @@ public class IEtudiantServiceImp extends IGenericServiceImp<Etudiant,Integer> im
     @Override
     public void assignEtudiantToDepartement(Integer etudiantId, Integer departementId) {
 
-        Departement departement = departementService.retrieveById(departementId);
-        Etudiant etudiant = this.retrieveById(etudiantId);
+        Departement departement = departementRepository.findById(departementId).orElse(null);
+        Etudiant etudiant = etudiantRepository.findById(etudiantId).orElse(null);
 
         etudiant.setDepartement(departement);
 
