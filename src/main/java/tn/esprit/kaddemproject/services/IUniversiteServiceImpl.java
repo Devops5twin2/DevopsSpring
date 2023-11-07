@@ -8,6 +8,7 @@ import tn.esprit.kaddemproject.entities.*;
 import tn.esprit.kaddemproject.generic.IGenericServiceImp;
 import tn.esprit.kaddemproject.repositories.ContratRepository;
 import tn.esprit.kaddemproject.repositories.DepartementRepository;
+import tn.esprit.kaddemproject.repositories.UniversiteRepository;
 import tn.esprit.kaddemproject.util.HelperClass;
 
 import java.time.LocalDate;
@@ -20,13 +21,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class IUniversiteServiceImpl extends IGenericServiceImp<Universite,Integer> implements IUniversiteService{
 
+    private final UniversiteRepository universiteRepository;
+    private final DepartementRepository departementRepository;
     private final ContratRepository contratRepository;
     private final IDepartementServiceImpl departementService;
 
     @Override
     public void assignUniversiteToDepartement(Integer idUniversite, Integer idDepartement) {
-        Universite universite = this.retrieveById(idUniversite);
-        Departement departement = departementService.retrieveById(idDepartement);
+        Universite universite = universiteRepository.findById(idUniversite).orElse(null);
+        Departement departement = departementRepository.findById(idDepartement).orElse(null);
         if (universite!= null && departement !=null){
             universite.getDepartements().add(departement);
         }
@@ -34,7 +37,7 @@ public class IUniversiteServiceImpl extends IGenericServiceImp<Universite,Intege
 
     @Override
     public List<Departement> retrieveDepartementsByUniversite(Integer idUniversite) {
-        Universite universite = this.retrieveById(idUniversite);
+        Universite universite = universiteRepository.findById(idUniversite).orElse(null);
         return universite!=null ? universite.getDepartements(): null;
     }
 
