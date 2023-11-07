@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public class IGenericServiceImp<T,ID> implements IGenericService<T,ID> {
 
 	@Autowired
-	JpaRepository<T,ID> baseRepository;
+	public JpaRepository<T,ID> baseRepository;
 
-   // @Autowired
+	// @Autowired
 	//private  BaseRepository<T, ID> baseRepository;
 
 	@Override
