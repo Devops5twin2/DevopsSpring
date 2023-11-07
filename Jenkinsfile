@@ -14,25 +14,6 @@ pipeline {
         stage('Start SQL') {
             steps {
                 script {
-                    // Start only the Nexus and SQL services
-                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
-
-                }
-            }
-        }
-
-        
-        // New stage for running tests
-        stage('Run Tests') {
-            steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw test -Dspring.profiles.active=test  '
-            }
-        }
-
-        stage('Maven Build and Deploy to Nexus') {
-            steps {
-            script {
               def attempts = 0
               def maxAttempts = 5
               def success = false
@@ -53,6 +34,26 @@ pipeline {
                       }
                      }
                     }
+                    // Start only the Nexus and SQL services
+                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
+
+                }
+            }
+        }
+
+        
+        // New stage for running tests
+        stage('Run Tests') {
+            steps {
+                sh 'chmod +x mvnw'
+                sh './mvnw test -Dspring.profiles.active=test  '
+            }
+        }
+
+        stage('Maven Build and Deploy to Nexus') {
+            steps {
+            script {
+
             sh './mvnw clean deploy -Dspring.profiles.active=build '
             }
 
