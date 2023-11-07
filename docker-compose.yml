@@ -1,1 +1,28 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kaddemProject
+    networks:
+      - springboot-mysql-net
+    restart: always
+
+  my-spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysqldb
+    networks:
+      - springboot-mysql-net
+    restart: always
+
+networks:
+  springboot-mysql-net:
+    driver: bridge
 
