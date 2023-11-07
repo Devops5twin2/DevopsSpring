@@ -1,35 +1,29 @@
-version: "3.8"
+version: '3.9'
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kaddemProject
+    networks:
+      - springboot-mysql-net
+    restart: always
+
+  my-spring-app:
+    container_name: my-spring-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysqldb
+    networks:
+      - springboot-mysql-net
+    restart: always
 
 networks:
   springboot-mysql-net:
-
-services:
-  mariadb:
-    container_name: mariadb
-    image: "mariadb:latest"
-    restart: unless-stopped
-    ports:
-      - 3306:3306
-    environment:
-      - MARIADB_ROOT_PASSWORD=root
-      - MARIADB_DATABASE=kaddemproject
-    networks:
-      - springboot-mysql-net
-
-  kadem:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    image: kadem
-    container_name: kadem_container
-    restart: unless-stopped
-    environment:
-      - spring.datasource.url=jdbc:mysql://mariadb:3306/kaddemproject?createDatabaseIfNotExist=true
-      - spring.datasource.username=root
-      - spring.datasource.password=root
-    ports:
-      - "8089:8086"
-    depends_on:
-      - mariadb
-    networks:
-      - springboot-mysql-net
+    driver: bridge
