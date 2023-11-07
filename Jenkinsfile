@@ -12,6 +12,7 @@ pipeline {
         }
          stage('testing') {
                     steps {
+                         sh 'chmod +x mvnw'
                         sh './mvnw  test -Ptest'
                     }
                 }
