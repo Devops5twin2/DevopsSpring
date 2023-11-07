@@ -13,8 +13,7 @@ pipeline {
          stage('testing') {
                     steps {
                          sh 'chmod +x mvnw'
-                         sh 'chmod +x mvnw.cmd'
-                        sh './mvnw  test -Ptest'
+                        sh './mvnw test -Dspring.profiles.active=test '
                     }
                 }
 
@@ -31,8 +30,8 @@ pipeline {
         stage('Maven Build and Deploy to Nexus') {
             steps {
                 sh 'chmod +x mvnw'
-                 sh 'chmod +x mvnw.cmd'
-                sh './mvnw clean deploy -Pprod'
+              
+                sh './mvnw clean deploy -Dspring.profiles.active=prod '
             }
         }
         
