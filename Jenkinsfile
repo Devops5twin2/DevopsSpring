@@ -3,11 +3,29 @@ pipeline {
     triggers {
        githubPush()
     }
-    
+
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'mouhib', credentialsId: 'github-access-token', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
+            }
+        }
+
+        stage('Start Nexus and SQL') {
+            steps {
+                script {
+                    // Start only the Nexus and SQL services
+                    sh 'docker-compose -f docker-compose.yml up -d nexus mysqldb'
+                }
+            }
+        }
+        
+        stage('Wait for Nexus to be ready') {
+            steps {
+                script {
+                    // Implement a wait-for-it script or similar logic to wait for Nexus to be ready
+                    sh 'wait-for-it.sh 192.187.47.10:8081 --timeout=300'
+                }
             }
         }
 
@@ -18,11 +36,11 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image and Deploy with Docker Compose') {
+        stage('Build and Start Spring Application') {
             steps {
                 script {
-                    // Using Docker Compose to build and run the services
-                    sh 'sudo docker-compose -f docker-compose.yml up --build -d'
+                    // Now build and start the Spring application container
+                    sh 'docker-compose -f docker-compose.yml up -d my-spring-app'
                 }
             }
         }
@@ -32,9 +50,12 @@ pipeline {
         success {
             echo 'Pipeline executed successfully'
         }
+        failure {
+            echo 'Pipeline failed.'
+        }
         always {
             // Clean up
-            sh 'sudo docker-compose -f docker-compose.yml down'
+            sh 'docker-compose -f docker-compose.yml down'
         }
     }
 }
