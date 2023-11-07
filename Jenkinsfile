@@ -3,14 +3,12 @@ pipeline {
     triggers {
        githubPush()
     }
-
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'mouhib', credentialsId: 'github-access-token', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
             }
         }
-
         stage('Start SQL') {
             steps {
                 script {
@@ -19,8 +17,6 @@ pipeline {
                 }
             }
         }
-
-        
         // New stage for running tests
         stage('Run Tests') {
             steps {
@@ -28,7 +24,12 @@ pipeline {
                 sh './mvnw test -Dspring.profiles.active=test  '
             }
         }
+          stage('SonarQube Analysis') {
 
+              sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=kadeem -Dsonar.projectName='kadeem'"
+            
+          }
+        }
         stage('Maven Build and Deploy to Nexus') {
             steps {
             script {
