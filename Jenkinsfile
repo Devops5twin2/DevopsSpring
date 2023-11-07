@@ -12,7 +12,7 @@ pipeline {
         }
          stage('testing') {
                     steps {
-                        sh './mvnw  test -Ptest '
+                        sh './mvnw  test -Ptest'
                     }
                 }
 
