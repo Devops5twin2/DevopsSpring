@@ -14,8 +14,28 @@ pipeline {
         stage('Start Nexus and SQL') {
             steps {
                 script {
+                    def attempts = 0
+                    def maxAttempts = 5
+                    def success = false
                     // Start only the Nexus and SQL services
                     sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
+                    while (!success && attempts < maxAttempts) {
+                        try {
+                            // Try to connect to the database (replace with your actual connection check command)
+                            sh 'mysqladmin ping -h mysqldb --silent'
+                            success = true
+                        } catch (Exception e) {
+                            attempts++
+                            if (attempts < maxAttempts) {
+                                echo "Waiting for SQL server to be up... attempt: ${attempts}"
+                                sleep(time: 60, unit: 'SECONDS') // wait for 60 seconds before next retry
+                            } else {
+                                echo "Failed to start SQL server after ${maxAttempts} attempts"
+                                currentBuild.result = 'FAILURE'
+                                return
+                            }
+                        }
+                    }
                 }
             }
         }
