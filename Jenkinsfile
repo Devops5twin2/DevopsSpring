@@ -52,7 +52,7 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed.'
-             sh 'sudo docker-compose -f docker-compose.yml down'
+            // sh 'sudo docker-compose -f docker-compose.yml down'
         }
      
     }
