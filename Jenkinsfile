@@ -16,28 +16,6 @@ pipeline {
                 script {
                     // Start only the Nexus and SQL services
                     sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
-              def attempts = 0
-              def maxAttempts = 5
-              def success = false
-                while (!success && attempts < maxAttempts) {
-                  try {
-                      // Use docker exec to run mysqladmin ping within the container
-                          sh 'sudo docker exec mysqldb mysqladmin -uroot -proot ping --silent'
-                          success = true
-                  } catch (Exception e) {
-                     attempts++
-                      if (attempts < maxAttempts) {
-                      echo "Waiting for SQL server to be up... attempt: ${attempts}"
-                      sleep(time: 60, unit: 'SECONDS') // wait for 60 seconds before next retry
-                        } else {
-                      echo "Failed to start SQL server after ${maxAttempts} attempts"
-                      currentBuild.result = 'FAILURE'
-                      return
-                      }
-                     }
-                    }
-
-
                 }
             }
         }
@@ -54,7 +32,26 @@ pipeline {
         stage('Maven Build and Deploy to Nexus') {
             steps {
             script {
-
+             def attempts = 0
+                          def maxAttempts = 5
+                          def success = false
+                            while (!success && attempts < maxAttempts) {
+                              try {
+                                  // Use docker exec to run mysqladmin ping within the container
+                                      sh 'sudo docker exec mysqldb mysqladmin -uroot -proot ping --silent'
+                                      success = true
+                              } catch (Exception e) {
+                                 attempts++
+                                  if (attempts < maxAttempts) {
+                                  echo "Waiting for SQL server to be up... attempt: ${attempts}"
+                                  sleep(time: 60, unit: 'SECONDS') // wait for 60 seconds before next retry
+                                    } else {
+                                  echo "Failed to start SQL server after ${maxAttempts} attempts"
+                                  currentBuild.result = 'FAILURE'
+                                  return
+                                  }
+                                 }
+                                }
             sh './mvnw clean deploy -Dspring.profiles.active=build '
             }
 
