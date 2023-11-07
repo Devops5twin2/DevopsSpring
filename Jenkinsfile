@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Start only the Nexus and SQL services
-                    sh 'docker-compose -f docker-compose.yml up -d nexus mysqldb'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d nexus mysqldb'
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     // Now build and start the Spring application container
-                    sh 'docker-compose -f docker-compose.yml up -d my-spring-app'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d my-spring-app'
                 }
             }
         }
@@ -55,7 +55,7 @@ pipeline {
         }
         always {
             // Clean up
-            sh 'docker-compose -f docker-compose.yml down'
+            sh 'sudo docker-compose -f docker-compose.yml down'
         }
     }
 }
