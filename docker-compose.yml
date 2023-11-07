@@ -22,7 +22,16 @@ services:
       - springboot-mysql-net
     restart: always
 
+  nexus:
+    image: sonatype/nexus3
+    ports:
+      - "8081:8081"
+    volumes:
+      - /home/vagrant:/nexus
+    networks:
+      - springboot-mysql-net
+    restart: always
+
 networks:
   springboot-mysql-net:
     driver: bridge
-
