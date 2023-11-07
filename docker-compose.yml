@@ -21,8 +21,8 @@ services:
       - "9090:9090"
     depends_on:
       - mysqldb
-    # networks:
-    #   springboot-mysql:
+    networks:
+      springboot-mysql:
     restart: always
 
 networks:
