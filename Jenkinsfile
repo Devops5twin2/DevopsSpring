@@ -27,9 +27,9 @@ pipeline {
           stage('SonarQube Analysis') {
 
               sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=kadeem -Dsonar.projectName='kadeem'"
-            
+
           }
-        }
+
         stage('Maven Build and Deploy to Nexus') {
             steps {
             script {
