@@ -14,6 +14,8 @@ pipeline {
         stage('Start SQL') {
             steps {
                 script {
+                    // Start only the Nexus and SQL services
+                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
               def attempts = 0
               def maxAttempts = 5
               def success = false
@@ -34,8 +36,7 @@ pipeline {
                       }
                      }
                     }
-                    // Start only the Nexus and SQL services
-                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
+
 
                 }
             }
