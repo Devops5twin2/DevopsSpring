@@ -1,45 +1,51 @@
 pipeline {
     agent { label 'agent-ubuntu' }
-     triggers {
-    githubPush()
-  }
+    triggers {
+       githubPush()
+    }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                 git branch: 'houssem', credentialsId: 'Github_Credentials', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
-                sh 'chmod +x mvnw'
-                // Check if the Docker image already exists
-                script {
-                     
-                    def imageExists = sh(script: 'docker images -q my-spring-app', returnStdout: true).trim()
-                    if (imageExists) {
-                        echo ' Docker image already exists. Removing the existing image...'
-                        sh 'sudo docker stop springboot-mysql-container'
-                        sh 'sudo docker rm springboot-mysql-container'
-                        sh 'sudo docker rmi my-spring-app'
-                    }
-
-                   sh './mvnw clean deploy -DskipTests'
-                    sh 'sudo docker build -t my-spring-app .'
-                }
+                  git branch: 'houssem', credentialsId: 'Github_Credentials', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
             }
         }
 
-        stage('Run Container') {
+        stage('Start Nexus and SQL') {
             steps {
-                sh 'sudo docker start mysqldb'
-                sh 'sudo docker start nexus'
-               
-                sh 'sudo docker run --network springboot-mysql --name springboot-mysql-container -p 9090:9090 my-spring-app'
+                script {
+                    // Start only the Nexus and SQL services
+                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
+                }
+            }
+        }
+        
+
+        stage('Maven Build and Deploy to Nexus') {
+            steps {
+                sh 'chmod +x mvnw'
+                sh './mvnw clean deploy -DskipTests'
+            }
+        }
+        
+        stage('Build and Start Spring Application') {
+            steps {
+                script {
+                    // Now build and start the Spring application container
+                    sh 'sudo docker-compose -f docker-compose.yml up -d my-spring-app'
+                }
             }
         }
     }
 
     post {
         success {
-            // Print a success message
             echo 'Pipeline executed successfully'
         }
+        failure {
+            echo 'Pipeline failed.'
+             sh 'sudo docker-compose -f docker-compose.yml down'
+        }
+     
     }
 }
