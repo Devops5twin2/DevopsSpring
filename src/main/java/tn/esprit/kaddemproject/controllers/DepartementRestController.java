@@ -6,6 +6,7 @@ import tn.esprit.kaddemproject.entities.Contrat;
 import tn.esprit.kaddemproject.entities.Departement;
 import tn.esprit.kaddemproject.generic.GenericController;
 
+//departement
 
 @RestController
 @AllArgsConstructor
