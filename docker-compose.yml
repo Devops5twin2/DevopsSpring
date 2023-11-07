@@ -20,7 +20,6 @@ services:
       - "9090:9090"
     depends_on:
       - mysqldb
-      - nexus
     networks:
       - springboot-mysql-net
     restart: always
