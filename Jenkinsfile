@@ -17,8 +17,9 @@ pipeline {
                     }
                 }
         stage('SonarQube Analysis') {             
-       
+                   steps{
                   sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=devop_kaddem -Dsonar.projectName='devop_kaddem'"
+                   }
 
               }
 
