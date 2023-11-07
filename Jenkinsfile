@@ -45,9 +45,6 @@ pipeline {
         failure {
             echo 'Pipeline failed.'
         }
-        always {
-            // Clean up
-            sh 'sudo docker-compose -f docker-compose.yml down'
-        }
+      
     }
 }
