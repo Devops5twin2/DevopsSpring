@@ -26,7 +26,7 @@ pipeline {
         }
           stage('SonarQube Analysis') {
  steps {
-              sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=kadeem -Dsonar.projectName='kadeem'"
+              sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=kadeem -Dsonar.projectName='kadeem' -Dsonar.token='squ_fe60665abc6b86b59109051fb5ba68928f82b0e6' "
 }
           }
 
