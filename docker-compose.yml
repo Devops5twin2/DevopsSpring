@@ -12,8 +12,8 @@ services:
     restart: always
 
   my-spring-app:
+    container_name: my-spring-app
     build:
-      container_name: my-spring-app
       context: .
       dockerfile: Dockerfile
     ports:
