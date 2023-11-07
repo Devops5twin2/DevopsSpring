@@ -24,12 +24,12 @@ public class ContratRestController extends GenericController<Contrat,Integer> {
 
     @PostMapping("/{idContrat}/{nomE}/{prenomE}")
     public Contrat affectContratToEtudiant (@PathVariable Integer idContrat,
-                                                @PathVariable String nomE,
-                                                @PathVariable String prenomE){
+                                            @PathVariable String nomE,
+                                            @PathVariable String prenomE){
         return contratService.affectContratToEtudiant(idContrat,nomE,prenomE);
     }
 
-    //Spring also gives us the option to set global date-time formats via the application properties file.
+    //Spring also gives us the option to set global date-time formats via the application properties file.s
     @GetMapping("/{startDate}/{endDate}")
     public Integer nbContratsValides(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                      @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate endDate){
@@ -38,5 +38,3 @@ public class ContratRestController extends GenericController<Contrat,Integer> {
 
 
 }
-
-
