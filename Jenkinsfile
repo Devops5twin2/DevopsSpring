@@ -18,7 +18,7 @@ pipeline {
                 }
         stage('SonarQube Analysis') {             
                    steps{
-                  sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=devop_kaddem -Dsonar.projectName='devop_kaddem' -Dsonar.token='squ_7f9c72e9c3c1771604a0ec8ca453ed1fda56c636'"
+                  sh "./mvnw clean verify -Dspring.profiles.active=test sonar:sonar -Dsonar.projectKey=devop_kaddem -Dsonar.projectName='devop_kaddem' -Dsonar.token='squ_7f9c72e9c3c1771604a0ec8ca453ed1fda56c636'"
                    }
 
               }
