@@ -17,9 +17,9 @@ pipeline {
                     }
                 }
         stage('SonarQube Analysis') {             
-                withSonarQubeEnv() {
+       
                   sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=devop_kaddem -Dsonar.projectName='devop_kaddem'"
-                    }
+
               }
 
         stage('Start Nexus and SQL') {
