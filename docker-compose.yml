@@ -10,7 +10,7 @@ services:
     ports:
       - 3306:3306
     networks:
-      springboot-mysql:
+      - springboot-mysql
 
   my-spring-app:
     container_name: my-spring-app
@@ -22,8 +22,12 @@ services:
     depends_on:
       - mysqldb
     networks:
-      springboot-mysql:
+      - springboot-mysql
     restart: always
 
 networks:
   springboot-mysql:
+    driver: bridge
+
+
+

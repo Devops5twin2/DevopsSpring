@@ -12,9 +12,16 @@ pipeline {
         }
          stage('testing') {
                     steps {
-                        sh './mvnw  test -Ptest'
+                         sh 'chmod +x mvnw'
+                        sh './mvnw test -Dspring.profiles.active=test '
                     }
                 }
+        stage('SonarQube Analysis') {             
+                   steps{
+                  sh "./mvnw clean verify -Dspring.profiles.active=test sonar:sonar -Dsonar.projectKey=devop_kaddem -Dsonar.projectName='devop_kaddem' -Dsonar.token='squ_7f9c72e9c3c1771604a0ec8ca453ed1fda56c636'"
+                   }
+
+              }
 
         stage('Start Nexus and SQL') {
             steps {
@@ -29,7 +36,9 @@ pipeline {
         stage('Maven Build and Deploy to Nexus') {
             steps {
                 sh 'chmod +x mvnw'
-                sh './mvnw clean deploy -Pprod'
+              
+                sh './mvnw clean deploy -Dspring.profiles.active=prod'
+
             }
         }
         
@@ -49,7 +58,7 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed.'
-             sh 'sudo docker-compose -f docker-compose.yml down'
+            // sh 'sudo docker-compose -f docker-compose.yml down'
         }
      
     }
