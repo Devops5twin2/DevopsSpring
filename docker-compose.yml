@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   mysqldb:
+    container_name: mysqldb
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -12,6 +13,7 @@ services:
 
   my-spring-app:
     build:
+      container_name: my-spring-app
       context: .
       dockerfile: Dockerfile
     ports:
@@ -24,6 +26,7 @@ services:
     restart: always
 
   nexus:
+    container_name: nexus
     image: sonatype/nexus3
     ports:
       - "8081:8081"
