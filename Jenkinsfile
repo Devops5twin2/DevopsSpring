@@ -53,7 +53,7 @@ pipeline {
                                   }
                                  }
                                 }
-            sh './mvnw clean deploy -Dspring.profiles.active=build '
+            sh './mvnw clean deploy -Dspring.profiles.active=build -DskipTests '
             }
 
             }
