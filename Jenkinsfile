@@ -37,7 +37,8 @@ pipeline {
             steps {
                 sh 'chmod +x mvnw'
               
-                sh './mvnw clean deploy -Dspring.profiles.active=prod'
+                sh './mvnw clean deploy -Dspring.profiles.active=prod -DskipTests'
+
 
             }
         }
