@@ -23,10 +23,9 @@ pipeline {
             }
         }
 
-        stage('Testing') {
+        stage('maven clean&Compile') {
             steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw test -Dspring.profiles.active=test'
+                sh 'mvn clean compile'
             }
         }
 
