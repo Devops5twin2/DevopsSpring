@@ -11,6 +11,7 @@ services:
       - 3306:3306
     networks:
       - springboot-mysql
+    restart: always
 
   my-spring-app:
     container_name: my-spring-app
