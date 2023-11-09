@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: tn.esprit.kaddemproject.services.ContratServiceImpTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.608 s <<< FAILURE! - in tn.esprit.kaddemproject.services.ContratServiceImpTest
-testAffectContratToEtudiant  Time elapsed: 0.004 s  <<< ERROR!
+Tests run: 7, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.499 s <<< FAILURE! - in tn.esprit.kaddemproject.services.ContratServiceImpTest
+testAffectContratToEtudiant  Time elapsed: 0.003 s  <<< ERROR!
 java.lang.NullPointerException
 	at tn.esprit.kaddemproject.services.ContratServiceImpTest.testAffectContratToEtudiant(ContratServiceImpTest.java:77)
 
