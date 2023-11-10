@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the Spring Boot application JAR file into the container
 #COPY target/KaddemProject-1.0.jar /app/KaddemProject-1.0.jar
-ADD http://192.168.33.120:8081/repository/maven-releases/tn/esprit/KaddemProject/1.0/KaddemProject-1.0.jar app.jar
+ADD http://192.168.1.178:8081/repository/maven-releases/tn/esprit/KaddemProject/1.0/KaddemProject-1.0.jar app.jar
 # Expose the port that the application will run on
 EXPOSE 8089
 
