@@ -13,8 +13,9 @@ services:
       - db:/var/lib/mysql
   # Spring Boot Application Service
   spring-app:
-    image: eyagahrbi/dockerhub:SpringImage
-    container_name: Backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart:  on-failure
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/malekdb?createDatabaseIfNotExist=true&useUnicode=true
