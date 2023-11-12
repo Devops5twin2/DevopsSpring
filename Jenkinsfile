@@ -74,7 +74,7 @@ pipeline {
                 script {
                 withSonarQubeEnv('sonar') 
                     {
-                    sh 'mvn sonar:sonar' 
+                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar' 
               }
 
             }
@@ -87,12 +87,6 @@ pipeline {
             }
         }
 
-        // stage('Maven Build and Deploy to Nexus') {
-        //     steps {
-        //         sh 'chmod +x mvnw'
-        //         sh './mvnw clean deploy -Dspring.profiles.active=prod'
-        //     }
-        // }
 
         stage('Build and Start Spring Application') {
             steps {
