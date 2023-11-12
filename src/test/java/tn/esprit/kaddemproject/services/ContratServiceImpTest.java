@@ -108,6 +108,6 @@ public class ContratServiceImpTest {
         // Assert
         verify(contratRepository, times(1)).findByArchiveIsFalseAndDateFinContrat(currentDate);
     }
-    
+
 }
 

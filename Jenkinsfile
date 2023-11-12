@@ -22,18 +22,77 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+         stage('Maven Clean') {
             steps {
-                sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey=devops-kaddem -Dsonar.projectName='devops-kaddem' -Dsonar.login=29dfe77363d51f8ecd848f50149766704abce9cb"
+                echo 'Running Maven Clean'
+                sh 'mvn clean'
+            }
+        }
+         stage('Maven Compile') {
+            steps {
+                echo 'Running Maven Compile'
+                sh 'mvn compile'
+            }
+        }
+        stage('JUNIT / MOCKITO') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('JaCoCo Report') {
+            steps {
+               
+                // Generate JaCoCo coverage report
+                sh 'mvn jacoco:report'
+            }
+        }
+         stage('Publish JaCoCo coverage report') {
+            steps {
+                // Publish the JaCoCo coverage report
+                step([$class: 'JacocoPublisher', 
+                      execPattern: '**/target/jacoco.exec', 
+                      classPattern: '**/classes', 
+                      sourcePattern: '**/src', 
+                      exclusionPattern: '/target/**/,**/*Test,**/*_javassist/**'
+                ])
+            }
+        }
+            stage('Build package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Maven Install') {
+            steps {
+                sh 'mvn install'
             }
         }
 
-        stage('Maven Build and Deploy to Nexus') {
+               
+        stage('SonarQube Scanner') {
             steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw clean deploy -Dspring.profiles.active=prod'
+                script {
+                withSonarQubeEnv('sonar') 
+                    {
+                    sh 'mvn sonar:sonar' 
+              }
+
+            }
+                
+            }
+            }
+        stage('Deploy to Nexus') {
+            steps {
+                sh 'mvn deploy -Dspring.profiles.active=prod'
             }
         }
+
+        // stage('Maven Build and Deploy to Nexus') {
+        //     steps {
+        //         sh 'chmod +x mvnw'
+        //         sh './mvnw clean deploy -Dspring.profiles.active=prod'
+        //     }
+        // }
 
         stage('Build and Start Spring Application') {
             steps {
