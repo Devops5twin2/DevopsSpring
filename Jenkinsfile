@@ -83,7 +83,7 @@ pipeline {
             }
         stage('Deploy to Nexus') {
             steps {
-                sh 'mvn deploy -Dspring.profiles.active=prod'
+                sh 'mvn clean deploy -Dspring.profiles.active=prod'
             }
         }
 
