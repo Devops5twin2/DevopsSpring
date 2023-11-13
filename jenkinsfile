@@ -8,7 +8,7 @@ pipeline {
         
         stage('GIT') {
             steps {
-                git branch: 'test-aziz',
+                git branch: 'departement',
                 credentialsId: 'git_token',
                 url: 'https://github.com/Devops5twin2/DevopsSpring.git'
             }
