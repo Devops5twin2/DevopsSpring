@@ -74,7 +74,7 @@ pipeline {
                 script {
                 withSonarQubeEnv('sonar') 
                     {
-                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar' 
+                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=chehine'
               }
 
             }
