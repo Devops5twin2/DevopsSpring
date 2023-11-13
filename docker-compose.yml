@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: departement
+    ports:
+      - 3306:3306
+    networks:
+      - springboot-mysql
+    restart: always
+
+  my-spring-app:
+    container_name: my-spring-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mysqldb
+    networks:
+      - springboot-mysql
+    restart: always
+
+networks:
+  springboot-mysql:
+    driver: bridge
