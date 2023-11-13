@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+ 
+
+    stages {
+     
+        
+        stage('GIT') {
+            steps {
+                git branch: 'test-aziz',
+                credentialsId: 'git_token',
+                url: 'https://github.com/Devops5twin2/DevopsSpring.git'
+            }
+        }
+        
+        stage('SonarQube') {
+            steps {
+                sh 'chmod +x mvnw'
+                sh "./mvnw -Dspring.profiles.active=test  sonar:sonar -Dsonar.projectKey=departement_aziz -Dsonar.host.url=http://192.168.56.120:9000 -Dsonar.login=51a4efe216f97bf4d9ee6f3255cc52b8bb44e638"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'chmod +x mvnw'
+                    sh "./mvnw clean package -DskipTests"
+                }
+            }
+        }
+
+        stage('Nexus') {
+            steps {
+                script {
+                    sh "./mvnw -X clean deploy -DskipTests"
+                }
+            }
+        }
+    }
+}
