@@ -2,6 +2,98 @@ pipeline {
     agent {
         label 'agent1'
     }
+pipeline {
+    agent {
+        label 'agent1'
+    }
+
+    triggers {
+        githubPush()
+    }
+
+    environment {
+        registry = "malek05/dockerhub"
+        registryCredential = '4c82311e-8f96-4423-9548-88af910555c9'
+        dockerImage = ''
+    }
+
+    stages {
+        stage('Git') {
+            steps {
+                echo 'Getting Project from Git'
+                git branch: 'malek',
+                    credentialsId: 'gitTokenn',
+                    url: 'https://github.com/Devops5twin2/DevopsSpring.git'
+            }
+        }
+
+        stage('Maven Clean & Compile') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Maven SonarQube') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+            }
+        }
+
+        stage('Nexus Deploy') {
+            steps {
+                sh 'mvn deploy'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'chmod +x mvnw'
+                sh './mvnw test -Dspring.profiles.active=test'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registry}:${BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Deploy Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Docker Compose Up') {
+            steps {
+                script {
+                    def result = sh(script: 'docker-compose up -d', returnStatus: true)
+                    if (result != 0) {
+                        error "docker-compose up failed with exit code ${result}"
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully'
+        }
+        failure {
+            echo 'Pipeline failed.'
+            // sh 'sudo docker-compose -f docker-compose.yml down'
+        }
+    }
+}
 
     triggers {
         githubPush()
