@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 @Service
+
 public class IEquipeServiceImpl extends IGenericServiceImp<Equipe,Integer> implements IEquipeService{
 
 

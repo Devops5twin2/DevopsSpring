@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: tn.esprit.kaddemproject.services.EquipeTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007 s <<< FAILURE! - in tn.esprit.kaddemproject.services.EquipeTest
+tn.esprit.kaddemproject.services.EquipeTest  Time elapsed: 0.007 s  <<< ERROR!
+java.lang.IllegalStateException: Configuration error: found multiple declarations of @BootstrapWith for test class [tn.esprit.kaddemproject.services.EquipeTest]: [@org.springframework.test.context.BootstrapWith(value=org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTestContextBootstrapper.class), @org.springframework.test.context.BootstrapWith(value=org.springframework.boot.test.context.SpringBootTestContextBootstrapper.class)]
+

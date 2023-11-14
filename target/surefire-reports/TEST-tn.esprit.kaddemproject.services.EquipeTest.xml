@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tn.esprit.kaddemproject.services.EquipeTest" time="0.007" tests="1" errors="1" skipped="0" failures="0">
+  <properties/>
+  <testcase name="tn.esprit.kaddemproject.services.EquipeTest" classname="tn.esprit.kaddemproject.services.EquipeTest" time="0.007">
+    <error message="Configuration error: found multiple declarations of @BootstrapWith for test class [tn.esprit.kaddemproject.services.EquipeTest]: [@org.springframework.test.context.BootstrapWith(value=org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTestContextBootstrapper.class), @org.springframework.test.context.BootstrapWith(value=org.springframework.boot.test.context.SpringBootTestContextBootstrapper.class)]" type="java.lang.IllegalStateException">java.lang.IllegalStateException: Configuration error: found multiple declarations of @BootstrapWith for test class [tn.esprit.kaddemproject.services.EquipeTest]: [@org.springframework.test.context.BootstrapWith(value=org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTestContextBootstrapper.class), @org.springframework.test.context.BootstrapWith(value=org.springframework.boot.test.context.SpringBootTestContextBootstrapper.class)]
+</error>
+  </testcase>
+</testsuite>

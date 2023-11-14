@@ -31,4 +31,7 @@ public class Equipe implements Serializable{
     private DetailEquipe detailEquipe;
 
 
+    public void setIdEquipe(long l) {
+
+    }
 }
