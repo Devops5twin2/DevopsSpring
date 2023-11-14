@@ -70,16 +70,7 @@ pipeline {
             }
         }
 
-        stage('Docker Compose Up') {
-            steps {
-                script {
-                    def result = sh(script: 'docker-compose up -d', returnStatus: true)
-                    if (result != 0) {
-                        error "docker-compose up failed with exit code ${result}"
-                    }
-                }
-            }
-        }
+
 
 
     }
