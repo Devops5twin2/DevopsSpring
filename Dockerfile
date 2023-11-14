@@ -2,7 +2,9 @@
 FROM openjdk:11-jre-slim-buster
 
 # Set the working directory
+
 WORKDIR /app
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Copy the Spring Boot application JAR file into the container
 ADD http://192.168.1.178:8081/repository/maven-releases/tn/esprit/KaddemProject/1.0/KaddemProject-1.0.jar app.jar
