@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'chehine', credentialsId: 'github_chehine', url: 'https://github.com/Devops5twin2/DevopsSpring'
+                git branch: 'chehine', credentialsId: 'github_chehine', url: 'https://github.com/Devops5twin2/DevopsSpring.git'
             }
         }
 
@@ -82,17 +82,19 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'DOCKERHUB_ACCESS_TOKEN', variable: 'dockeraccesstoken')]) {
-                        sh "docker login -u chehinedh -p ${dockeraccesstoken}"
-                    }
-                    sh 'docker tag chehinedhemaied-5twin2 chehinedh/devops:v3'
-                    sh 'docker push chehinedh/devops:v3'
-                }
-            }
-        }
+//         stage('Push Docker Image') {
+//     steps {
+//         script {
+//             withCredentials([string(credentialsId: 'DOCKERHUB_ACCESS_TOKEN', variable: 'dockeraccesstoken')]) {
+//                 sh "docker login -u chehinedh -p ${dockeraccesstoken}"
+//             }
+//             sh 'docker info'
+//             sh 'docker tag chehinedhemaied-5twin2 chehinedh/devops:v3'
+//             sh 'docker push chehinedh/devops:v3'
+//         }
+//     }
+// }
+
 
         stage('Build and Start Spring Application') {
             steps {
