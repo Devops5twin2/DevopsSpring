@@ -16,93 +16,98 @@ pipeline {
         stage('Start MySQL') {
             steps {
                 script {
-                    // Start only the Nexus and SQL services
                     sh 'docker-compose -f docker-compose.yml up -d mysqldb'
                 }
             }
         }
 
-         stage('Maven Clean') {
+        stage('Maven Clean') {
             steps {
                 echo 'Running Maven Clean'
                 sh 'mvn clean'
             }
         }
-         stage('Maven Compile') {
+
+        stage('Maven Compile') {
             steps {
                 echo 'Running Maven Compile'
                 sh 'mvn compile'
             }
         }
+
         stage('JUNIT / MOCKITO') {
             steps {
                 sh 'mvn test'
             }
         }
+
         stage('JaCoCo Report') {
             steps {
-               
-                // Generate JaCoCo coverage report
                 sh 'mvn jacoco:report'
             }
         }
-         stage('Publish JaCoCo coverage report') {
-            steps {
-                // Publish the JaCoCo coverage report
-                step([$class: 'JacocoPublisher', 
-                      execPattern: '**/target/jacoco.exec', 
-                      classPattern: '**/classes', 
-                      sourcePattern: '**/src', 
-                      exclusionPattern: '/target/**/,**/*Test,**/*_javassist/**'
-                ])
-            }
-        }
-            stage('Build package') {
+
+        stage('Build package') {
             steps {
                 sh 'mvn package'
             }
         }
+
         stage('Maven Install') {
             steps {
                 sh 'mvn install'
             }
         }
 
-               
-        stage('SonarQube Scanner') {
+        stage('SonarQube Analysis') {
             steps {
-                script {
-                withSonarQubeEnv('sonar') 
-                    {
-                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=chehine'
-              }
-
-            }
-                
-            }
-            }
-        stage('Deploy to Nexus') {
-            steps {
-                sh 'mvn clean deploy -Dspring.profiles.active=prod'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=chehine'
             }
         }
 
+        stage('Deploy to Nexus') {
+            steps {
+                sh 'mvn -X clean deploy'
+            }
+        }
 
-        stage('Build and Start Spring Application') {
+        stage('Docker Image') {
             steps {
                 script {
-                    // Now build and start the Spring application container
-                    sh 'sudo docker-compose -f docker-compose.yml up -d my-spring-app'
+                    withCredentials([string(credentialsId: 'DOCKERHUB_ACCESS_TOKEN', variable: 'dockeraccesstoken')]) {
+                        sh "docker login -u chehinedh -p ${dockeraccesstoken}"
+                    }
+                    sh 'docker build -t chehinedhemaied-5twin2 .'
                 }
             }
         }
 
-        // stage('Prometheus & Grafana Jenkins supervision') {
-        //     steps {
-        //         sh 'docker start prometheus'
-        //         sh 'docker start grafana'
-        //     }
-        // }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'DOCKERHUB_ACCESS_TOKEN', variable: 'dockeraccesstoken')]) {
+                        sh "docker login -u chehinedh -p ${dockeraccesstoken}"
+                    }
+                    sh 'docker tag chehinedhemaied-5twin2 chehinedh/devops:v3'
+                    sh 'docker push chehinedh/devops:v3'
+                }
+            }
+        }
+
+        stage('Build and Start Spring Application') {
+            steps {
+                script {
+                    sh 'docker-compose -f docker-compose.yml up -d my-spring-app'
+                }
+            }
+        }
+
+        stage('Prometheus & Grafana Jenkins supervision') {
+            steps {
+                sh 'docker start prometheus'
+                sh 'docker start grafana'
+            }
+        }
     }
 
     post {
