@@ -67,7 +67,7 @@ pipeline {
 
         stage('Deploy to Nexus') {
             steps {
-                sh 'mvn -X -Dspring.profiles.active=testclean deploy -Dspring.profiles.active=test'
+                sh 'mvn -X clean deploy -Dspring.profiles.active=test'
             }
         }
 
