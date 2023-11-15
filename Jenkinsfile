@@ -26,7 +26,7 @@ pipeline {
         stage('Start Nexus and SQL') {
             steps {
                 script {
-                    // Start only the Nexus and SQL services
+                    // Start only the Nexus and SQL servicess
                     sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
                 }
             }
