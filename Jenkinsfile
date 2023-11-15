@@ -55,6 +55,17 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                sh 'mvn verify -Dspring.profiles.active=test sonar:sonar -Dsonar.login=admin -Dsonar.password=chehine'
+            }
+        }
+
+        stage('Deploy to Nexus') {
+            steps {
+                sh 'mvn -X clean deploy -Dspring.profiles.active=test'
+            }
+        }
 
         stage('Docker Image') {
             steps {
@@ -67,6 +78,18 @@ pipeline {
             }
         }
 
+//         stage('Push Docker Image') {
+//     steps {
+//         script {
+//             withCredentials([string(credentialsId: 'DOCKERHUB_ACCESS_TOKEN', variable: 'dockeraccesstoken')]) {
+//                 sh "docker login -u chehinedh -p ${dockeraccesstoken}"
+//             }
+//             sh 'docker info'
+//             sh 'docker tag chehinedhemaied-5twin2 chehinedh/devops:v3'
+//             sh 'docker push chehinedh/devops:v3'
+//         }
+//     }
+// }
 
 
         stage('Build and Start Spring Application') {
