@@ -53,11 +53,7 @@ pipeline {
             }
         }
 
-        stage('Maven Install') {
-            steps {
-                sh 'mvn install -Dspring.profiles.active=test'
-            }
-        }
+        
 
         stage('SonarQube Analysis') {
             steps {
