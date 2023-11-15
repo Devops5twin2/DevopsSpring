@@ -61,13 +61,13 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=chehine'
+                sh 'mvn verify -Dspring.profiles.active=test sonar:sonar -Dsonar.login=admin -Dsonar.password=chehine'
             }
         }
 
         stage('Deploy to Nexus') {
             steps {
-                sh 'mvn -X clean deploy'
+                sh 'mvn -X -Dspring.profiles.active=testclean deploy -Dspring.profiles.active=test'
             }
         }
 

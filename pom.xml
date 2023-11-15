@@ -94,6 +94,15 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <spring.profiles.active>test</spring.profiles.active>
+            </properties>
+        </profile>
+
+    </profiles>
     <build>
         <pluginManagement>
             <plugins>
