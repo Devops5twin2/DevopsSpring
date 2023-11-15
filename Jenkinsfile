@@ -55,7 +55,7 @@ pipeline {
 
         stage('Maven Install') {
             steps {
-                sh 'mvn install'
+                sh 'mvn install -Dspring.profiles.active=test'
             }
         }
 
