@@ -16,7 +16,7 @@ services:
     container_name: my-spring-app
     image: my-spring-app
     ports:
-      - "9091:9091"
+      - "9090:9090"
     depends_on:
       - mysql
     restart: on-failure
