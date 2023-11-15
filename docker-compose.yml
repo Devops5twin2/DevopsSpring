@@ -2,13 +2,13 @@ version: '3.9'
 
 services:
   mysqldb:
-    container_name: mysqldb
+    container_name: mysql
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: kaddemProject
     ports:
-      - 3306:3306
+      - "3306:3306"
     networks:
       - springboot-mysql-net
     restart: always
@@ -16,10 +16,6 @@ services:
   my-spring-app:
     container_name: my-spring-app
     image: chehinedhemaied-5twin2
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/kaddemProject?createDatabaseIfNotExist=true&useUnicode=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
     ports:
       - "9091:9091"
     depends_on:
