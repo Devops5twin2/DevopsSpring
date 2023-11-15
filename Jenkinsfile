@@ -24,7 +24,7 @@ pipeline {
         stage('Maven Clean') {
             steps {
                 echo 'Running Maven Clean'
-                sh 'mvn clean'
+                sh 'mvn clean '
             }
         }
 
@@ -37,7 +37,7 @@ pipeline {
 
         stage('JUNIT / MOCKITO') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test -Dspring.profiles.active=test'
             }
         }
 
