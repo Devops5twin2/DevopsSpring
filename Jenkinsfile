@@ -41,11 +41,7 @@ pipeline {
             }
         }
 
-        stage('JaCoCo Report') {
-            steps {
-                sh 'mvn jacoco:report'
-            }
-        }
+
 
         stage('Build package') {
             steps {
@@ -53,7 +49,11 @@ pipeline {
             }
         }
 
-        
+        stage('Maven Install') {
+            steps {
+                sh 'mvn install -Dspring.profiles.active=test'
+            }
+        }
 
         stage('SonarQube Analysis') {
             steps {
