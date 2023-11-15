@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Start only the Nexus and SQL servicess
-                    sh 'sudo docker -v'
+                    sh 'sudo docker-compose --version'
                 }
             }
         }
