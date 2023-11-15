@@ -2,10 +2,6 @@ pipeline {
     agent {
         label 'agent1'
     }
-pipeline {
-    agent {
-        label 'agent1'
-    }
 
     triggers {
         githubPush()
@@ -18,14 +14,7 @@ pipeline {
     }
 
     stages {
-        stage('Git') {
-            steps {
-                echo 'Getting Project from Git'
-                git branch: 'malek',
-                    credentialsId: 'gitTokenn',
-                    url: 'https://github.com/Devops5twin2/DevopsSpring.git'
-            }
-        }
+
 
         stage('Maven Clean & Compile') {
             steps {
@@ -33,17 +22,7 @@ pipeline {
             }
         }
 
-        stage('Maven SonarQube') {
-            steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
-            }
-        }
 
-        stage('Nexus Deploy') {
-            steps {
-                sh 'mvn deploy'
-            }
-        }
 
         stage('Run Tests') {
             steps {
@@ -51,6 +30,23 @@ pipeline {
                 sh './mvnw test -Dspring.profiles.active=test'
             }
         }
+       stage("MVN SONARQUBE") {
+        steps {
+            script {
+             withSonarQubeEnv('sonarServer') {
+                sh 'mvn sonar:sonar -Dsonar.login=squ_45dcb005cdae70ecf5280f05f51c25cb7b03c4c4'
+            }
+        }
+    }
+    }
+
+        stage('Nexus Deploy') {
+            steps {
+                sh 'mvn deploy'
+            }
+        }
+
+
 
         stage('Build Docker Image') {
             steps {
@@ -70,104 +66,29 @@ pipeline {
             }
         }
 
-
-
-
-    }
-
-    post {
-        success {
-            echo 'Pipeline executed successfully'
-        }
-        failure {
-            echo 'Pipeline failed.'
-            // sh 'sudo docker-compose -f docker-compose.yml down'
-        }
-    }
-}
-
-    triggers {
-        githubPush()
-    }
-
-    environment {
-        registry = "malekzlitni/dockerhub"
-        registryCredential = 'dockerhub'
-        dockerImage = ''
-    }
-
-    stages {
-        stage('Git') {
+        stage('Build Image') {
             steps {
-                echo 'Getting Project from Git'
-                git branch: 'malek',
-                    credentialsId: 'gitTokenn',
-                    url: 'https://github.com/Devops5twin2/DevopsSpring.git'
-            }
-        }
-
-        stage('maven clean&Compile') {
-            steps {
-                sh 'mvn clean compile'
-            }
-        }
-
-        stage('MVN SONARQUBE') {
-            steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                sh 'mvn deploy -DskipTests'
-            }
-        }
-
-        stage('Docker Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("${registry}:SpringImage")
-                }
-            }
-        }
-
-        stage('Deploy Image') {
-            steps {
-                script {
-                    docker.withRegistry('', registryCredential) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
-
-        stage('Start Nexus and SQL') {
-            steps {
-                script {
-                    sh 'sudo docker-compose -f docker-compose.yml up -d mysqldb'
-                }
+                sh 'docker build -t my-spring-app .'
             }
         }
 
         stage('Docker Compose') {
             steps {
-                sh 'docker-compose up -d'
-            }
-        }
 
-        stage('Maven Build and Deploy to Nexus') {
-            steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw clean deploy -Dspring.profiles.active=prod -DskipTests'
-            }
-        }
+                    sh 'docker compose down --remove-orphans'
+                    sh 'docker compose up -d'
 
-        stage('Build and Start Spring Application') {
+            }
+
+         }
+        stage('Send Email Notification') {
             steps {
-                script {
-                    sh 'sudo docker-compose -f docker-compose.yml up -d my-spring-app'
-                }
+                emailext(
+                     subject: "Build Status: ${currentBuild.currentResult}",
+                     body: "The build status is: ${currentBuild.currentResult}",
+                     to: 'malek.zlitni@esprit.tn',
+                     attachLog: true,
+                )
             }
         }
     }
