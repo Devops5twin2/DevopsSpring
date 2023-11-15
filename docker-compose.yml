@@ -13,8 +13,8 @@ services:
     restart: unless-stopped
 
   my-spring-app:
-    container_name: project-spring-app-1
-    image: project-spring-app
+    container_name: my-spring-app
+    image: my-spring-app
     ports:
       - "9090:9090"
     depends_on:
