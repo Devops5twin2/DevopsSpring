@@ -44,5 +44,13 @@ pipeline {
                 }
             }
         }
+   stage('Build and Start Spring Application') {
+            steps {
+                script {
+                    // Now build and start the Spring application container
+                    sh 'sudo docker-compose -f docker-compose.yml up -d my-spring-app'
+                }
+            }
+        }
     }
 }
