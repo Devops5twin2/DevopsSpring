@@ -1,32 +1,23 @@
-version: '3.9'
+version: '3'
 
 services:
-  mysqldb:
+  mysql:
     container_name: mysql
-    image: 'mysql:5.7'
+    image: mysql:5.7
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: malekdb
-    networks:
-      - springboot-mysql-net
-    restart: always
+    volumes:
+      - /home/mysql/data:/var/lib/mysql
+    restart: unless-stopped
 
   my-spring-app:
     container_name: project-spring-app-1
     image: project-spring-app
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "9090:9090"
     depends_on:
-      - mysqldb
-    networks:
-      - springboot-mysql-net
-    restart: always
+      - mysql
+    restart: on-failure
 
-networks:
-  springboot-mysql-net:
-    driver: bridge
