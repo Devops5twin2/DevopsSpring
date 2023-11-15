@@ -1,30 +1,32 @@
-version: '3'
+version: '3.9'
+
 services:
-  mysql:
-    image: 'mysql:5.7'
+  mysqldb:
     container_name: mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: malekdb
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    image: 'mysql:5.7'
     ports:
       - "3306:3306"
-    volumes:
-      - db:/var/lib/mysql
-  # Spring Boot Application Service
-  spring-app:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: malekdb
+    networks:
+      - springboot-mysql-net
+    restart: always
+
+  my-spring-app:
+    container_name: project-spring-app-1
+    image: project-spring-app
     build:
       context: .
       dockerfile: Dockerfile
-    restart:  on-failure
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/malekdb?createDatabaseIfNotExist=true&useUnicode=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_PROFILES_ACTIVE: dev
     ports:
       - "9090:9090"
     depends_on:
-      - mysql
-volumes:
-  db:
+      - mysqldb
+    networks:
+      - springboot-mysql-net
+    restart: always
+
+networks:
+  springboot-mysql-net:
+    driver: bridge
