@@ -15,9 +15,7 @@ services:
 
   my-spring-app:
     container_name: my-spring-app
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: chehinedhemaied-5twin2:latest  
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/kaddemProject?createDatabaseIfNotExist=true&useUnicode=true
       SPRING_DATASOURCE_USERNAME: root
